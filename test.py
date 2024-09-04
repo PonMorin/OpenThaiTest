@@ -10,7 +10,7 @@ from dotenv import dotenv_values
 config = dotenv_values(".env")
 import torch
 
-def model(device):
+def models(device):
     
     dataFamily = f"./Data/"
     vectordb = Chroma(persist_directory=dataFamily, embedding_function=OpenAIEmbeddings())
@@ -62,14 +62,14 @@ if __name__ == "__main__":
     model = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True, torch_dtype=torch.float16)
     model.to(device)
 
-    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=200, temperature=0)
+    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=520, temperature=0)
     llm = HuggingFacePipeline(pipeline=pipe)
 
     # Prompt
     prompt = "สวัสดีครับ OpenThaiGPT"
     while True:
-        prompt = str(input("กรุณากรอกคำถาม: "))
-        llama_prompt = f"<s>[INST] <<SYS>>\nYou are a question answering assistant. Answer the question as truthful and helpful as possible คุณคือผู้ช่วยตอบคำถาม จงตอบคำถามอย่างถูกต้องและมีประโยชน์ที่สุด<</SYS>>\n\n{prompt} [/INST]"
+        prompt = str(input("\nกรุณากรอกคำถาม: "))
+        llama_prompt = f"<s>[INST] <<SYS>>\nYou are a question answering assistant. Answer the question as truthful and helpful as possible คุณคือผู้ช่วยตอบคำถาม จงตอบคำถามอย่างถูกต้องและมีประโยชน์ที่สุด<</SYS>>\n\n{prompt} [/INST]\n"
         for chunks in llm.stream(llama_prompt):
             print(chunks, end="", flush=True)
 
