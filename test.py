@@ -57,7 +57,7 @@ if __name__ == "__main__":
     # user_input = str(input("กรุณาถามคำถาม: "))
     # res = model(device)
 
-    model_path="openthaigpt/openthaigpt-1.0.0-7b-chat"
+    model_path="openthaigpt/openthaigpt-1.0.0-7b-chat-gguf"
     tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
     model = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True, torch_dtype=torch.float16)
     model.to(device)
