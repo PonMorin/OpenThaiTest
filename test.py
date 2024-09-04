@@ -24,7 +24,7 @@ def models(device):
     model = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True, torch_dtype=torch.float16)
     model.to(device)
 
-    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=520, temperature=0.1)
+    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=512, temperature=0.1)
     llm = HuggingFacePipeline(pipeline=pipe)
 
     system_template = """
@@ -73,8 +73,11 @@ if __name__ == "__main__":
     # while True:
     #     prompt = str(input("\nกรุณากรอกคำถาม: "))
     # llama_prompt = f"<s>[INST] <<SYS>>\nYou are a question answering assistant. Answer the question as truthful and helpful as possible คุณคือผู้ช่วยตอบคำถาม จงตอบคำถามอย่างถูกต้องและมีประโยชน์ที่สุด<</SYS>>\n\n{prompt} [/INST]\n"
-    for chunks in res.stream(prompt):
-        print(chunks, end="", flush=True)
+    
+    print(res.invoke(prompt))
+
+    # for chunks in res.stream(prompt):
+    #     print(chunks, end="", flush=True)
 
 
 
