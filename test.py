@@ -7,8 +7,10 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnableParallel, RunnablePassthrough
 import os
 from dotenv import dotenv_values
-config = dotenv_values(".env")
 import torch
+
+config = dotenv_values(".env")
+os.environ["OPENAI_API_KEY"] = config["openai_api"]
 
 def models(device):
     
