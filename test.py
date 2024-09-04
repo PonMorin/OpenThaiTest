@@ -22,7 +22,7 @@ def models(device):
     model = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True, torch_dtype=torch.float16)
     model.to(device)
 
-    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=200, temperature=0)
+    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=520, temperature=0.1)
     llm = HuggingFacePipeline(pipeline=pipe)
 
     system_template = """
@@ -54,24 +54,25 @@ if __name__ == "__main__":
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     print(f"Using device: {device}")
 
-    # user_input = str(input("กรุณาถามคำถาม: "))
     # res = model(device)
 
-    model_path="openthaigpt/openthaigpt-1.0.0-7b-chat-gguf"
-    tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
-    model = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True, torch_dtype=torch.float16)
-    model.to(device)
+    # model_path="openthaigpt/openthaigpt-1.0.0-7b-chat"
+    # tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
+    # model = AutoModelForCausalLM.from_pretrained(model_path, trust_remote_code=True, torch_dtype=torch.float16)
+    # model.to(device)
 
-    pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=520, temperature=0)
-    llm = HuggingFacePipeline(pipeline=pipe)
+    # pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=520, temperature=0)
+    # llm = HuggingFacePipeline(pipeline=pipe)
 
     # Prompt
-    prompt = "สวัสดีครับ OpenThaiGPT"
-    while True:
-        prompt = str(input("\nกรุณากรอกคำถาม: "))
-        llama_prompt = f"<s>[INST] <<SYS>>\nYou are a question answering assistant. Answer the question as truthful and helpful as possible คุณคือผู้ช่วยตอบคำถาม จงตอบคำถามอย่างถูกต้องและมีประโยชน์ที่สุด<</SYS>>\n\n{prompt} [/INST]\n"
-        for chunks in llm.stream(llama_prompt):
-            print(chunks, end="", flush=True)
+    res =  models(device)
+    prompt = str(input("กรุณาถามคำถาม: "))
+
+    # while True:
+    #     prompt = str(input("\nกรุณากรอกคำถาม: "))
+    # llama_prompt = f"<s>[INST] <<SYS>>\nYou are a question answering assistant. Answer the question as truthful and helpful as possible คุณคือผู้ช่วยตอบคำถาม จงตอบคำถามอย่างถูกต้องและมีประโยชน์ที่สุด<</SYS>>\n\n{prompt} [/INST]\n"
+    for chunks in res.stream(prompt):
+        print(chunks, end="", flush=True)
 
 
 
