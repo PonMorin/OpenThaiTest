@@ -67,10 +67,11 @@ if __name__ == "__main__":
 
     # Prompt
     prompt = "สวัสดีครับ OpenThaiGPT"
-    llama_prompt = f"<s>[INST] <<SYS>>\nYou are a question answering assistant. Answer the question as truthful and helpful as possible คุณคือผู้ช่วยตอบคำถาม จงตอบคำถามอย่างถูกต้องและมีประโยชน์ที่สุด<</SYS>>\n\n{prompt} [/INST]"
-
-    for chunks in llm.stream(llama_prompt):
-        print(chunks, end="", flush=True)
+    while True:
+        prompt = str(input("กรุณากรอกคำถาม: "))
+        llama_prompt = f"<s>[INST] <<SYS>>\nYou are a question answering assistant. Answer the question as truthful and helpful as possible คุณคือผู้ช่วยตอบคำถาม จงตอบคำถามอย่างถูกต้องและมีประโยชน์ที่สุด<</SYS>>\n\n{prompt} [/INST]"
+        for chunks in llm.stream(llama_prompt):
+            print(chunks, end="", flush=True)
 
 
 
